@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +48,10 @@ public class UserServiceImpl implements UserService {
         if (!saveRegisterUserDto.getPassword().equals(saveRegisterUserDto.getRepeatedPassword())) {
             throw new InvalidPasswordException("Passwords do not match");
         }
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }
