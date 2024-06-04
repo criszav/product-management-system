@@ -4,10 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -79,5 +82,29 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(jwt)
                 .getPayload(); // obtiene la data (claims) del jwt
+    }
+
+    public String extractJwtFromRequest(HttpServletRequest request) {
+
+        // Obtiene el header de autorizacion de la solicitud HTTP
+        // este header es el que contiene el token jwt
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+
+        // Verifica que header contenga texto y que comience con el prefijo 'Bearer '
+        if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+            return null;
+        }
+
+        // Extrae el token jwt del header de autorizacion
+        // El header tiene formato 'Beaerer <token>', entonces divide la cadena en un espacio, y toma el seguno item (posicion 1), que es el token
+        String jwt = authorizationHeader.split(" ")[1];
+
+        return jwt;
+    }
+
+    public Date extractExpirationDate(String jwt) {
+        // Extrae fecha de expiracion del token
+        return extractAllClaims(jwt).getExpiration();
     }
 }
