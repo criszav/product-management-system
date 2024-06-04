@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -61,12 +62,14 @@ public class User implements UserDetails {
         if (role == null) return null; // si rol del ser es null, no se hace nada
         if (role.getPermissions() == null) return null; // si los permisos del user son null, no se hace nada
 
-        return role.getPermissions().stream()
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
                 .map(permission -> {
                     String permissionName = permission.name(); // obtiene nombre de los permisos del user
                     return new SimpleGrantedAuthority(permissionName); // crea un authority con el nombre del permiso del user
                 })
                 .collect(Collectors.toList());
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + getRole().name()));
+        return authorities;
     }
 
     @Override
