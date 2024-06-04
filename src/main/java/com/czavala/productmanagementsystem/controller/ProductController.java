@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,8 +54,8 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @GetMapping("/find/{product-name}")
-    public ResponseEntity<List<ProductDto>> getProductsByName(@PathVariable(value = "product-name") String productName) {
+    @GetMapping("/find/{productName}")
+    public ResponseEntity<List<ProductDto>> getProductsByName(@PathVariable String productName) {
         List<ProductDto> products = productService.findProductsByName(productName);
 
         if (!products.isEmpty()) {
