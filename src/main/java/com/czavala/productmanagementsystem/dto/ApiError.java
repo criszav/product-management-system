@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY) // incluye solo campos no vacios en el json
+@JsonInclude(JsonInclude.Include.NON_EMPTY) // incluye solo campos NO vacios en el json
 public class ApiError implements Serializable {
 
     private String backendMessage;
