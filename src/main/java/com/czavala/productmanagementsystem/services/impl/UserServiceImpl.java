@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         newUser.setEmail(saveRegisterUserDto.getEmail());
         newUser.setUsername(saveRegisterUserDto.getUsername());
         newUser.setPassword(passwordEncoder.encode(saveRegisterUserDto.getPassword())); // se encripta la clave del user
-        newUser.setRole(Role.ROLE_CUSTOMER); // por defecto se le asigan el rol customer
+        newUser.setRole(Role.CUSTOMER); // por defecto se le asigan el rol customer
         newUser.setCreatedAt(LocalDateTime.now());
 
         return userRepository.save(newUser);
