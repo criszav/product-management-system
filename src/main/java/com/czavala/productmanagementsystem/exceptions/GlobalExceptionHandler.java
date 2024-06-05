@@ -16,19 +16,6 @@ import java.util.Set;
 @RestControllerAdvice // mapea, controla excepciones
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class) // mapea errores genericos
-    public ResponseEntity<ApiError> genericExceptionHandler(Exception e, HttpServletRequest request) {
-
-        ApiError apiError = new ApiError();
-        apiError.setBackendMessage(e.getLocalizedMessage());
-        apiError.setMessage("Internal error. Please contact the admin.");
-        apiError.setUrl(request.getRequestURL().toString());
-        apiError.setMethod(request.getMethod());
-        apiError.setTimestamp(LocalDateTime.now());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class) // mapea errores de validacion de argumentos ingresados por el usuario
     public ResponseEntity<ApiError> handlerMethodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request) {
 
@@ -64,6 +51,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException exception, HttpServletRequest request) {
+
+        ApiError apiError = new ApiError();
+        apiError.setBackendMessage(exception.getLocalizedMessage());
+        apiError.setMessage(exception.getMessage());
+        apiError.setUrl(request.getRequestURL().toString());
+        apiError.setMethod(request.getMethod());
+        apiError.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+    }
+
+
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<ApiError> handleInvalidPasswordException(InvalidPasswordException e, HttpServletRequest request) {
 
@@ -75,6 +76,19 @@ public class GlobalExceptionHandler {
         apiError.setTimestamp(LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    @ExceptionHandler(Exception.class) // mapea errores genericos
+    public ResponseEntity<ApiError> genericExceptionHandler(Exception e, HttpServletRequest request) {
+
+        ApiError apiError = new ApiError();
+        apiError.setBackendMessage(e.getLocalizedMessage());
+        apiError.setMessage("Internal error. Please contact the admin.");
+        apiError.setUrl(request.getRequestURL().toString());
+        apiError.setMethod(request.getMethod());
+        apiError.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 
 
