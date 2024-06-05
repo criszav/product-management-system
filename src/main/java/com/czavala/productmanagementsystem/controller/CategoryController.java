@@ -21,8 +21,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-//    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN', 'CUSTOMER')")
-//    @PermitAll
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN', 'CUSTOMER')")
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
         List<CategoryDto> categories = categoryService.findAllCategories();
@@ -33,7 +32,7 @@ public class CategoryController {
         return ResponseEntity.notFound().build();
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN', 'CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id) {
         Optional<CategoryDto> category = categoryService.findCategoryById(id);

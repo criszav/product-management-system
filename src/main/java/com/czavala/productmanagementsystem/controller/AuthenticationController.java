@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    @PreAuthorize("permitAll")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid AuthRequestDto authRequestDto) {
         AuthResponseDto authResponse = authenticationService.login(authRequestDto);
@@ -27,19 +29,21 @@ public class AuthenticationController {
     }
 
     // endpoint para visualizar la validez de un jwt
+    @PreAuthorize("permitAll")
     @GetMapping("/validate")
     public ResponseEntity<Boolean> validateToken(@RequestParam String jwt) {
         boolean isTokenValid = authenticationService.validateToken(jwt);
         return ResponseEntity.ok(isTokenValid);
     }
 
+    @PreAuthorize("permitAll")
     @GetMapping("/profile")
     public ResponseEntity<User> findMyProfile() { // todo - retornar user dto en lugar de user entity
         User user = authenticationService.findLoggedInUser();
-        System.out.println("User from AuthenticationController: " + user);
         return ResponseEntity.ok(user);
     }
 
+    @PreAuthorize("permitAll")
     @GetMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
         authenticationService.logout(request);

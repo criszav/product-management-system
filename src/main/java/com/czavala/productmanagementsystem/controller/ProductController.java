@@ -20,6 +20,7 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @PreAuthorize("permitAll")
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() {
         List<ProductDto> products = productService.findAllProducts();
@@ -30,30 +31,35 @@ public class ProductController {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
         Optional<ProductDto> product = productService.findProductById(id);
         return product.map(productFound -> ResponseEntity.ok(productFound)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ProductDto> saveProduct(@RequestBody @Valid SaveProductDto saveProductDto) {
         ProductDto newProduct = productService.saveProduct(saveProductDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> updateProductById(@PathVariable Long id, @RequestBody @Valid SaveProductDto saveProductDto) {
         ProductDto product = productService.updateProductById(id, saveProductDto);
         return ResponseEntity.ok(product);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/disable")
     public ResponseEntity<ProductDto> disableProductById(@PathVariable Long id) {
         ProductDto product = productService.disableProductById(id);
         return ResponseEntity.ok(product);
     }
 
+    @PreAuthorize("permitAll")
     @GetMapping("/find/{productName}")
     public ResponseEntity<List<ProductDto>> getProductsByName(@PathVariable String productName) {
         List<ProductDto> products = productService.findProductsByName(productName);
