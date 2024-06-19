@@ -16,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "t_jwt_tokens")
 public class JwtToken {
 
     @Id
