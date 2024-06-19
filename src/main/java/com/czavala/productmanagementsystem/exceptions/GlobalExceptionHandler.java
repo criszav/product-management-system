@@ -1,5 +1,6 @@
 package com.czavala.productmanagementsystem.exceptions;
 
+import com.cloudinary.Api;
 import com.czavala.productmanagementsystem.dto.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -28,7 +31,7 @@ public class GlobalExceptionHandler {
         apiError.setMethod(request.getMethod());
         apiError.setTimestamp(LocalDateTime.now());
 
-        e.getBindingResult().getAllErrors().stream() // obtiene todos los errores de la exception
+        e.getBindingResult().getAllErrors() // obtiene todos los errores de la exception
                 .forEach(error -> {
                     var errorMessage = error.getDefaultMessage(); // extrae el mensaje de la exception
                     validationErrors.add(errorMessage); // agrega mensaje de error al Set de errores de validacion
@@ -76,6 +79,32 @@ public class GlobalExceptionHandler {
         apiError.setTimestamp(LocalDateTime.now());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<ApiError> handleMultiPartException(MultipartException e, HttpServletRequest request) {
+
+        ApiError apiError = new ApiError();
+        apiError.setBackendMessage(e.getLocalizedMessage());
+        apiError.setMessage(e.getMessage());
+        apiError.setUrl(request.getRequestURL().toString());
+        apiError.setMethod(request.getMethod());
+        apiError.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiError> handleMaxUploadSizeExceedException(MaxUploadSizeExceededException e, HttpServletRequest request) {
+
+        ApiError apiError = new ApiError();
+        apiError.setBackendMessage(e.getLocalizedMessage());
+        apiError.setMessage(e.getMessage());
+        apiError.setUrl(request.getRequestURL().toString());
+        apiError.setMethod(request.getMethod());
+        apiError.setTimestamp(LocalDateTime.now());
+
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(apiError);
     }
 
     @ExceptionHandler(Exception.class) // mapea errores genericos
