@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDto> saveProduct(@RequestBody @Valid SaveProductDto saveProductDto) {
+    public ResponseEntity<ProductDto> saveProduct(@RequestBody @Valid SaveProductDto saveProductDto) throws IOException {
         ProductDto newProduct = productService.saveProduct(saveProductDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }

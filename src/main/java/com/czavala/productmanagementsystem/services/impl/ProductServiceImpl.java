@@ -9,9 +9,12 @@ import com.czavala.productmanagementsystem.persistance.entities.Category;
 import com.czavala.productmanagementsystem.persistance.entities.Product;
 import com.czavala.productmanagementsystem.persistance.repository.ProductRepository;
 import com.czavala.productmanagementsystem.services.ProductService;
+import com.czavala.productmanagementsystem.services.cloudinary.CloudinaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartException;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public List<ProductDto> findAllProducts() {
@@ -37,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto saveProduct(SaveProductDto saveProductDto) {
+    public ProductDto saveProduct(SaveProductDto saveProductDto) throws IOException {
         Product newProduct = new Product();
         newProduct.setName(saveProductDto.getName());
         newProduct.setPrice(saveProductDto.getPrice());
@@ -47,6 +51,16 @@ public class ProductServiceImpl implements ProductService {
         category.setId(saveProductDto.getCategoryId());
 
         newProduct.setCategory(category);
+
+        if (saveProductDto.getImage() != null) {
+            try {
+                String imageUrl = cloudinaryService.uploadImage(saveProductDto.getImage());
+                newProduct.setImageUrl(imageUrl);
+            } catch (MultipartException exception) {
+                throw new MultipartException("Error uploading image: " + exception.getMessage());
+            }
+        }
+
         newProduct.setCreatedAt(LocalDateTime.now());
 
         productRepository.save(newProduct);
