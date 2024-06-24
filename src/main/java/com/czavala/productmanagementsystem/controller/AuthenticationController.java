@@ -47,6 +47,6 @@ public class AuthenticationController {
     @GetMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
         authenticationService.logout(request);
-        return ResponseEntity.ok(new LogoutResponse("Successfull logout.", LocalDateTime.now()));
+        return ResponseEntity.ok(new LogoutResponse("Successful logout.", LocalDateTime.now()));
     }
 }
