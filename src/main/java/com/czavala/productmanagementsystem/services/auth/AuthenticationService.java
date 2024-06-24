@@ -4,11 +4,13 @@ import com.czavala.productmanagementsystem.dto.auth.AuthRequestDto;
 import com.czavala.productmanagementsystem.dto.auth.AuthResponseDto;
 import com.czavala.productmanagementsystem.dto.auth.RegisteredUserDto;
 import com.czavala.productmanagementsystem.dto.auth.SaveRegisterUserDto;
+import com.czavala.productmanagementsystem.dto.email.EmailDetails;
 import com.czavala.productmanagementsystem.exceptions.ResourceNotFoundException;
 import com.czavala.productmanagementsystem.persistance.entities.JwtToken;
 import com.czavala.productmanagementsystem.persistance.entities.User;
 import com.czavala.productmanagementsystem.persistance.repository.JwtTokenRepository;
 import com.czavala.productmanagementsystem.services.UserService;
+import com.czavala.productmanagementsystem.services.email.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -32,7 +35,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenRepository jwtTokenRepository;
+    private final EmailService emailService;
 
+    @Transactional
     public RegisteredUserDto registerCustomer(SaveRegisterUserDto saveRegisterUserDto) {
 
         User user = userService.registerOneCustomer(saveRegisterUserDto); // realiza el registro de un nuevo customer
@@ -41,6 +46,10 @@ public class AuthenticationService {
 
         // Guarda token en DB (para realizacion de logout y desactivar token en DB)
         saveUserToken(user, jwt);
+
+        // Enviar email de bienvenida
+        EmailDetails emailDetails = emailService.getEmailDetails(user);
+        emailService.sendSimpleEmail(emailDetails);
 
         RegisteredUserDto userDto = new RegisteredUserDto();
         userDto.setId(user.getId());
@@ -52,6 +61,7 @@ public class AuthenticationService {
 
         return userDto;
     }
+
 
     private void saveUserToken(User user, String jwt) {
         // Crea un token para guardarlo en DB
