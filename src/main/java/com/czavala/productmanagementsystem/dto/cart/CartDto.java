@@ -24,4 +24,6 @@ public class CartDto implements Serializable {
     private Integer numberOfProducts;
 
     private Long userId;
+
+    private String status;
 }
