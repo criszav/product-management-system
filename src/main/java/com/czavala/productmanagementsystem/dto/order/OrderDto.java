@@ -1,5 +1,6 @@
 package com.czavala.productmanagementsystem.dto.order;
 
+import com.czavala.productmanagementsystem.dto.cart.CartDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,8 @@ public class OrderDto implements Serializable {
     private List<OrderProductDto> orderProducts = new ArrayList<>();
     private Long totalOrder;
     private Integer numberOfProducts;
+    private CartDto cartDto;
+    private String orderStatus;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 }

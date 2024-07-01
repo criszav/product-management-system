@@ -1,6 +1,8 @@
 package com.czavala.productmanagementsystem.persistance.entities.order;
 
+import com.czavala.productmanagementsystem.persistance.Utils.OrderStatus;
 import com.czavala.productmanagementsystem.persistance.entities.User;
+import com.czavala.productmanagementsystem.persistance.entities.cart.Cart;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,14 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProducts = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
 
     @CreatedDate
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
