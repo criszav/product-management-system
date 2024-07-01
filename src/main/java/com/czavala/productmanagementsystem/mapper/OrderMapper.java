@@ -4,13 +4,17 @@ import com.czavala.productmanagementsystem.dto.order.OrderDto;
 import com.czavala.productmanagementsystem.dto.order.OrderProductDto;
 import com.czavala.productmanagementsystem.persistance.entities.order.Order;
 import com.czavala.productmanagementsystem.persistance.entities.order.OrderProduct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderMapper {
+
+    private final CartMapper cartMapper;
 
     public OrderDto mapToOrderDto(Order order) {
 
@@ -21,6 +25,8 @@ public class OrderMapper {
         orderDto.setTotalOrder(order.getTotalOrder());
         orderDto.setNumberOfProducts(order.getNumberOfProducts());
         orderDto.setCreatedAt(order.getCreatedAt());
+        orderDto.setCartDto(cartMapper.mapToCartDto(order.getCart()));
+        orderDto.setOrderStatus(order.getStatus().name());
 
         return orderDto;
     }
@@ -34,7 +40,7 @@ public class OrderMapper {
             OrderProductDto orderProductDto = new OrderProductDto();
             orderProductDto.setId(op.getId());
             orderProductDto.setProduct(op.getProduct());
-            orderProductDto.setOrder(op.getOrder());
+//            orderProductDto.setOrder(op.getOrder());
             orderProductDto.setQuantity(op.getQuantity());
             orderProductDto.setTotalPrice(op.getTotalPrice());
 
