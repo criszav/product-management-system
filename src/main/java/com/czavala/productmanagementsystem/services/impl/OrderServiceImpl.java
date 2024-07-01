@@ -3,6 +3,8 @@ package com.czavala.productmanagementsystem.services.impl;
 import com.czavala.productmanagementsystem.dto.order.OrderDto;
 import com.czavala.productmanagementsystem.exceptions.ResourceNotFoundException;
 import com.czavala.productmanagementsystem.mapper.OrderMapper;
+import com.czavala.productmanagementsystem.persistance.Utils.CartStatus;
+import com.czavala.productmanagementsystem.persistance.Utils.OrderStatus;
 import com.czavala.productmanagementsystem.persistance.entities.User;
 import com.czavala.productmanagementsystem.persistance.entities.cart.Cart;
 import com.czavala.productmanagementsystem.persistance.entities.order.Order;
@@ -10,6 +12,7 @@ import com.czavala.productmanagementsystem.persistance.entities.order.OrderProdu
 import com.czavala.productmanagementsystem.persistance.repository.CartRepository;
 import com.czavala.productmanagementsystem.persistance.repository.OrderRepository;
 import com.czavala.productmanagementsystem.services.OrderService;
+import com.czavala.productmanagementsystem.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +27,13 @@ public class OrderServiceImpl implements OrderService {
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final UserService userService;
 
     @Override
-    public OrderDto createOrderFromCartCheckout(User user) {
+    public OrderDto createOrderFromCartCheckout(String username) {
+
+        // Encuentra al user autenticado, segun su username
+        User user = userService.findByUsername(username).get();
 
         // Busca cart del usuario autenticado
         Cart cart = cartRepository.findByUserId(user.getId())
@@ -47,15 +54,19 @@ public class OrderServiceImpl implements OrderService {
                 })
                 .collect(Collectors.toList());
 
+        newOrder.setCart(cart);
         newOrder.setOrderProducts(orderProducts);
         newOrder.setCreatedAt(LocalDateTime.now());
+        newOrder.setStatus(OrderStatus.PROCESSING);
 
         // Guarda la orden en DB
         orderRepository.save(newOrder);
         // orderProductRepository.saveAll(orderProducts); // todo: es posible guardar los produtos de la orden, pero aún no esta definido
 
         // Elimina carrito desde DB - todo: ¿será buena idea eliminar el carrito cuando este se convierte en una Order?
-        cartRepository.delete(cart);
+//        cartRepository.delete(cart);
+        cart.setStatus(CartStatus.PROCESSED);
+        cartRepository.save(cart);
 
         return orderMapper.mapToOrderDto(newOrder);
     }
