@@ -12,8 +12,10 @@ public class ProductMapper {
         if (product == null) return null;
 
         ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setPrice(product.getPrice());
+        productDto.setImageUrl(product.getImageUrl());
         productDto.setStatus(product.getStatus().name());
         productDto.setCategory(product.getCategory().getName());
 
