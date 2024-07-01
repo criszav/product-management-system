@@ -66,7 +66,7 @@ public class HttpSecurityConfig {
         /* config endpoints de products */
         authRequest.requestMatchers(HttpMethod.GET, "/products/{id}")
                         .hasAnyRole(Role.ADMIN.name(), Role.ASSISTANT_ADMIN.name(), Role.CUSTOMER.name());
-        authRequest.requestMatchers(HttpMethod.GET, "/find/{productName}")
+        authRequest.requestMatchers(HttpMethod.GET, "/products/find/{productName}")
                         .hasAnyRole(Role.ADMIN.name(), Role.ASSISTANT_ADMIN.name()); // todo - agregar role CUSTOMER
         authRequest.requestMatchers(HttpMethod.GET, "/products").permitAll();
 
@@ -92,6 +92,18 @@ public class HttpSecurityConfig {
                 .hasAnyRole(Role.ADMIN.name(), Role.ASSISTANT_ADMIN.name());
         authRequest.requestMatchers(HttpMethod.PUT, "/categories/{id}/disable")
                 .hasRole(Role.ADMIN.name());
+
+        /* config endpoints de cart */
+        authRequest.requestMatchers(HttpMethod.GET, "/carts/**")
+                        .hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name());
+        authRequest.requestMatchers(HttpMethod.POST, "/carts/**")
+                        .hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name());
+        authRequest.requestMatchers(HttpMethod.DELETE, "/carts/**")
+                        .hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name());
+
+        /* config endpoints de order */
+        authRequest.requestMatchers(HttpMethod.GET, "/orders/**")
+                .hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name());
 
 
         /* config 'auth' endpoints */
