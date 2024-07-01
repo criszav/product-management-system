@@ -22,28 +22,28 @@ public class CartController {
 
 
     @GetMapping("/current")
-    public ResponseEntity<CartDto> getCurrentUserCart(@AuthenticationPrincipal User user) {
-        CartDto cart = cartService.getCurrentUserCart(user);
+    public ResponseEntity<CartDto> getCurrentUserCart(@AuthenticationPrincipal String username) {
+        CartDto cart = cartService.getCurrentUserCart(username);
         return ResponseEntity.ok(cart);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CartDto> addProductToCart(@AuthenticationPrincipal User user, @RequestBody AddProductToCartRequest addProductRequest) {
-        CartDto cart = cartService.addItemToCart(user, addProductRequest);
+    public ResponseEntity<CartDto> addProductToCart(@AuthenticationPrincipal String username, @RequestBody AddProductToCartRequest addProductRequest) {
+        CartDto cart = cartService.addItemToCart(username, addProductRequest);
         return ResponseEntity.ok(cart);
     }
 
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<CartDto> removeProductFromCart(@AuthenticationPrincipal User user, @PathVariable Long productId) {
-        CartDto cart = cartService.removeItemFromCart(user, productId);
+    public ResponseEntity<CartDto> removeProductFromCart(@AuthenticationPrincipal String username, @PathVariable Long productId) {
+        CartDto cart = cartService.removeItemFromCart(username, productId);
         return ResponseEntity.ok(cart);
     }
 
     // Endpoint para crear un Order a partir de un Cart (carrito de compra)
     // Se genera cuando el cliente avanza en el proceso de compra (pago, por ejemplo)
     @PostMapping("/checkout")
-    public ResponseEntity<OrderDto> checkoutCartToOrder(@AuthenticationPrincipal User user) {
-        OrderDto order = orderService.createOrderFromCartCheckout(user);
+    public ResponseEntity<OrderDto> checkoutCartToOrder(@AuthenticationPrincipal String username) {
+        OrderDto order = orderService.createOrderFromCartCheckout(username);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
