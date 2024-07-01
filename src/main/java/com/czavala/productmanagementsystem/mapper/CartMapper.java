@@ -21,6 +21,9 @@ public class CartMapper {
         cartDto.setCartItems(mapToCartItemDto(cartFromDB.getCartItems()));
         cartDto.setNumberOfProducts(cartFromDB.getNumberOfProducts());
         cartDto.setTotalCart(cartFromDB.getTotalCart());
+        cartDto.setCartStatus(cartFromDB.getStatus().name());
+        cartDto.setCreatedAt(cartFromDB.getCreatedAt());
+        cartDto.setLastModified(cartFromDB.getLastModified());
 
         return cartDto;
     }
