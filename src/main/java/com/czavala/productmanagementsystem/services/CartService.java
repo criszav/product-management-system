@@ -2,13 +2,12 @@ package com.czavala.productmanagementsystem.services;
 
 import com.czavala.productmanagementsystem.dto.cart.AddProductToCartRequest;
 import com.czavala.productmanagementsystem.dto.cart.CartDto;
-import com.czavala.productmanagementsystem.persistance.entities.User;
 
 public interface CartService {
 
-    CartDto getCurrentUserCart(User user);
+    CartDto getCurrentUserCart(String username);
 
-    CartDto addItemToCart(User user, AddProductToCartRequest addProductRequest);
+    CartDto addItemToCart(String username, AddProductToCartRequest addProductRequest);
 
-    CartDto removeItemFromCart(User user, Long productId);
+    CartDto removeItemFromCart(String username, Long productId);
 }
