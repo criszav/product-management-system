@@ -31,6 +31,7 @@ public class Product {
     @Column(nullable = false)
     private Long price;
 
+    @Column(length = 1000)
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
