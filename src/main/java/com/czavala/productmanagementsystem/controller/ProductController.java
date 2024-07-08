@@ -6,9 +6,11 @@ import com.czavala.productmanagementsystem.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,8 +42,20 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<ProductDto> saveProduct(@RequestBody @Valid SaveProductDto saveProductDto) throws IOException {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProductDto> saveProduct(
+            @RequestParam("name") String name,
+            @RequestParam("price") Long price,
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("categoryId") Long categoryId
+    ) throws IOException {
+
+        SaveProductDto saveProductDto = new SaveProductDto();
+        saveProductDto.setName(name);
+        saveProductDto.setPrice(price);
+        saveProductDto.setImage(image);
+        saveProductDto.setCategoryId(categoryId);
+
         ProductDto newProduct = productService.saveProduct(saveProductDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
