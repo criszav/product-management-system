@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
         User user = userService.findByUsername(username).get();
 
         // Busca cart del usuario autenticado
-        Cart cart = cartRepository.findByUserId(user.getId())
+        Cart cart = cartRepository.findByUserIdAndStatusNew(user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found. User id: " + user.getId()));
 
         // Crea una nueva Order
