@@ -16,4 +16,5 @@ public class EmailDetails {
     private String from;
     private String subject;
     private String messageBody;
+    private String contentType;
 }
