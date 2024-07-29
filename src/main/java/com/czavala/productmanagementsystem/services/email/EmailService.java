@@ -8,5 +8,5 @@ public interface EmailService {
     void sendSimpleEmail(EmailDetails emailDetails);
 
     void sendWelcomeEmail(User user);
-    EmailDetails getEmailDetails(User user);
+    EmailDetails getWelcomeEmailDetails(User user);
 }

@@ -48,8 +48,8 @@ public class AuthenticationService {
         saveUserToken(user, jwt);
 
         // Enviar email de bienvenida
-        EmailDetails emailDetails = emailService.getEmailDetails(user);
-        emailService.sendSimpleEmail(emailDetails);
+        EmailDetails welcomeEmailDetails = emailService.getWelcomeEmailDetails(user);
+        emailService.sendSimpleEmail(welcomeEmailDetails);
 
         RegisteredUserDto userDto = new RegisteredUserDto();
         userDto.setId(user.getId());
