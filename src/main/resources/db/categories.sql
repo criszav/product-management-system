@@ -1,0 +1,6 @@
+INSERT INTO t_categories (name, status, created_at) VALUES ('Deporte', 'ENABLED', CURRENT_TIMESTAMP)
+INSERT INTO t_categories (name, status, created_at) VALUES ('Electronica', 'ENABLED', CURRENT_TIMESTAMP)
+INSERT INTO t_categories (name, status, created_at) VALUES ('Calzado', 'ENABLED', CURRENT_TIMESTAMP)
+INSERT INTO t_categories (name, status, created_at) VALUES ('Hogar', 'ENABLED', CURRENT_TIMESTAMP)
+INSERT INTO t_categories (name, status, created_at) VALUES ('Jardin', 'ENABLED', CURRENT_TIMESTAMP)
+INSERT INTO t_categories (name, status, created_at) VALUES ('Gamer', 'ENABLED', CURRENT_TIMESTAMP)
