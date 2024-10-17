@@ -1,7 +1,7 @@
 package com.czavala.productmanagementsystem.services.impl;
 
-import com.czavala.productmanagementsystem.dto.CategoryDto;
-import com.czavala.productmanagementsystem.dto.SaveCategoryDto;
+import com.czavala.productmanagementsystem.dto.productCategory.CategoryDto;
+import com.czavala.productmanagementsystem.dto.productCategory.SaveCategoryDto;
 import com.czavala.productmanagementsystem.exceptions.ResourceNotFoundException;
 import com.czavala.productmanagementsystem.mapper.CategoryMapper;
 import com.czavala.productmanagementsystem.persistance.Utils.Status;
@@ -9,6 +9,8 @@ import com.czavala.productmanagementsystem.persistance.entities.Category;
 import com.czavala.productmanagementsystem.persistance.repository.CategoryRepository;
 import com.czavala.productmanagementsystem.services.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,10 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryDto> findAllCategories() {
-        return categoryRepository.findAll().stream()
-                .map(category -> categoryMapper.mapToCategoryDto(category))
-                .collect(Collectors.toList());
+    public Page<CategoryDto> findAllCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable)
+                .map(category -> categoryMapper.mapToCategoryDto(category));
     }
 
     @Override

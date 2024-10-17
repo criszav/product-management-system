@@ -1,10 +1,12 @@
 package com.czavala.productmanagementsystem.controller;
 
-import com.czavala.productmanagementsystem.dto.ProductDto;
-import com.czavala.productmanagementsystem.dto.SaveProductDto;
+import com.czavala.productmanagementsystem.dto.product.ProductDto;
+import com.czavala.productmanagementsystem.dto.product.SaveProductDto;
 import com.czavala.productmanagementsystem.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +27,10 @@ public class ProductController {
 
     @PreAuthorize("permitAll")
     @GetMapping
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
-        List<ProductDto> products = productService.findAllProducts();
+    public ResponseEntity<Page<ProductDto>> getAllProducts(Pageable pageable) {
+        Page<ProductDto> products = productService.findAllProducts(pageable);
 
-        if (!products.isEmpty()) {
-            return ResponseEntity.ok(products);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(products);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN')")
@@ -46,8 +45,8 @@ public class ProductController {
     public ResponseEntity<ProductDto> saveProduct(
             @RequestParam("name") String name,
             @RequestParam("price") Long price,
-            @RequestParam("image") MultipartFile image,
-            @RequestParam("categoryId") Long categoryId
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam("category_id") Long categoryId
     ) throws IOException {
 
         SaveProductDto saveProductDto = new SaveProductDto();

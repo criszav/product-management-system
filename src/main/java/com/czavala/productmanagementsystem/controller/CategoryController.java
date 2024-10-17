@@ -1,11 +1,12 @@
 package com.czavala.productmanagementsystem.controller;
 
-import com.czavala.productmanagementsystem.dto.CategoryDto;
-import com.czavala.productmanagementsystem.dto.SaveCategoryDto;
+import com.czavala.productmanagementsystem.dto.productCategory.CategoryDto;
+import com.czavala.productmanagementsystem.dto.productCategory.SaveCategoryDto;
 import com.czavala.productmanagementsystem.services.CategoryService;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,13 +24,10 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN', 'CUSTOMER')")
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        List<CategoryDto> categories = categoryService.findAllCategories();
+    public ResponseEntity<Page<CategoryDto>> getAllCategories(Pageable pageable) {
+        Page<CategoryDto> categories = categoryService.findAllCategories(pageable);
 
-        if (!categories.isEmpty()) {
-            return ResponseEntity.ok(categories);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(categories);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT_ADMIN')")

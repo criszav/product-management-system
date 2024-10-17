@@ -32,7 +32,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDto getCurrentUserCart(String username) {
         User user = userService.findByUsername(username).get();
-        Cart cartFromDB = getOrCreateCartByUserId(user);
+        Cart cartFromDB = this.getOrCreateCartByUserId(user);
         return cartMapper.mapToCartDto(cartFromDB);
     }
 

@@ -1,7 +1,7 @@
 package com.czavala.productmanagementsystem.services.impl;
 
-import com.czavala.productmanagementsystem.dto.ProductDto;
-import com.czavala.productmanagementsystem.dto.SaveProductDto;
+import com.czavala.productmanagementsystem.dto.product.ProductDto;
+import com.czavala.productmanagementsystem.dto.product.SaveProductDto;
 import com.czavala.productmanagementsystem.exceptions.ResourceNotFoundException;
 import com.czavala.productmanagementsystem.mapper.ProductMapper;
 import com.czavala.productmanagementsystem.persistance.Utils.Status;
@@ -11,6 +11,8 @@ import com.czavala.productmanagementsystem.persistance.repository.ProductReposit
 import com.czavala.productmanagementsystem.services.ProductService;
 import com.czavala.productmanagementsystem.services.cloudinary.CloudinaryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartException;
 
@@ -29,10 +31,9 @@ public class ProductServiceImpl implements ProductService {
     private final CloudinaryService cloudinaryService;
 
     @Override
-    public List<ProductDto> findAllProducts() {
-        return productRepository.findAll().stream()
-                .map(product -> productMapper.mapToProductDto(product))
-                .collect(Collectors.toList());
+    public Page<ProductDto> findAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(product -> productMapper.mapToProductDto(product));
     }
 
     @Override
