@@ -1,6 +1,6 @@
 package com.czavala.productmanagementsystem.mapper;
 
-import com.czavala.productmanagementsystem.dto.CategoryDto;
+import com.czavala.productmanagementsystem.dto.productCategory.CategoryDto;
 import com.czavala.productmanagementsystem.persistance.entities.Category;
 import org.springframework.stereotype.Service;
 

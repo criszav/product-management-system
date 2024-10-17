@@ -4,8 +4,10 @@ import com.czavala.productmanagementsystem.dto.auth.AuthRequestDto;
 import com.czavala.productmanagementsystem.dto.auth.AuthResponseDto;
 import com.czavala.productmanagementsystem.dto.auth.RegisteredUserDto;
 import com.czavala.productmanagementsystem.dto.auth.SaveRegisterUserDto;
+import com.czavala.productmanagementsystem.dto.customer.CustomerProfileDto;
 import com.czavala.productmanagementsystem.dto.email.EmailDetails;
 import com.czavala.productmanagementsystem.exceptions.ResourceNotFoundException;
+import com.czavala.productmanagementsystem.mapper.UserMapper;
 import com.czavala.productmanagementsystem.persistance.entities.JwtToken;
 import com.czavala.productmanagementsystem.persistance.entities.User;
 import com.czavala.productmanagementsystem.persistance.repository.JwtTokenRepository;
@@ -36,6 +38,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenRepository jwtTokenRepository;
     private final EmailService emailService;
+    private final UserMapper userMapper;
 
     @Transactional
     public RegisteredUserDto registerCustomer(SaveRegisterUserDto saveRegisterUserDto) {
@@ -138,15 +141,16 @@ public class AuthenticationService {
         }
     }
 
-    public User findLoggedInUser() {
+    public CustomerProfileDto findLoggedInUser() {
 
         // obtiene el objeto de autenticacion
         Authentication authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
-        // extrae desde el objeto de autenticacion, el usermame de user autenticado actualmentew
+        // extrae desde el objeto de autenticacion, el usermame de user autenticado actualmente
         String username = (String) authentication.getPrincipal();
 
         return userService.findByUsername(username)
+                .map(user -> userMapper.mapToCustomerProfileDto(user))
                 .orElseThrow(() -> new ResourceNotFoundException("User not found. Username: " + username));
     }
 

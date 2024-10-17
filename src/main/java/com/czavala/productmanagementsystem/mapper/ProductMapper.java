@@ -1,6 +1,6 @@
 package com.czavala.productmanagementsystem.mapper;
 
-import com.czavala.productmanagementsystem.dto.ProductDto;
+import com.czavala.productmanagementsystem.dto.product.ProductDto;
 import com.czavala.productmanagementsystem.persistance.entities.Product;
 import org.springframework.stereotype.Service;
 

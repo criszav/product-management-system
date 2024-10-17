@@ -42,7 +42,7 @@ public class HttpSecurityConfig {
                 })
 
                 // indica que DaoAuthenticationProvider es la estrategia a utilizar para procesar la interfaz Authentication
-                // en la clase ApplicationConfig definicamos la estrategia DaoAuthenticationProvider
+                // en la clase ApplicationConfig definimos la estrategia DaoAuthenticationProvider
                 .authenticationProvider(daoAuthenticationProvider)
 
                 // primero ejecuta nuestro filtro JwtAuthenticationFilter antes de ejecutar el filtro UsernamePasswordAuthenticationFilter

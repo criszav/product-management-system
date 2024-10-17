@@ -1,8 +1,9 @@
 package com.czavala.productmanagementsystem.controller;
 
-import com.czavala.productmanagementsystem.dto.LogoutResponse;
+import com.czavala.productmanagementsystem.dto.auth.LogoutResponse;
 import com.czavala.productmanagementsystem.dto.auth.AuthRequestDto;
 import com.czavala.productmanagementsystem.dto.auth.AuthResponseDto;
+import com.czavala.productmanagementsystem.dto.customer.CustomerProfileDto;
 import com.czavala.productmanagementsystem.persistance.entities.User;
 import com.czavala.productmanagementsystem.services.auth.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,8 +39,8 @@ public class AuthenticationController {
 
     @PreAuthorize("permitAll")
     @GetMapping("/profile")
-    public ResponseEntity<User> findMyProfile() { // todo - retornar user dto en lugar de user entity
-        User user = authenticationService.findLoggedInUser();
+    public ResponseEntity<CustomerProfileDto> findMyProfile() { // todo - retornar user dto en lugar de user entity
+        CustomerProfileDto user = authenticationService.findLoggedInUser();
         return ResponseEntity.ok(user);
     }
 

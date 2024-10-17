@@ -1,6 +1,5 @@
 package com.czavala.productmanagementsystem.persistance.repository;
 
-import com.czavala.productmanagementsystem.dto.ProductDto;
 import com.czavala.productmanagementsystem.persistance.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
