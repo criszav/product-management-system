@@ -1,4 +1,4 @@
-package com.czavala.productmanagementsystem.config.security.cloudinary;
+package com.czavala.productmanagementsystem.config.cloudinary;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

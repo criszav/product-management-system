@@ -1,4 +1,4 @@
-package com.czavala.productmanagementsystem.config.security.email;
+package com.czavala.productmanagementsystem.config.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
