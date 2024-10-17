@@ -1,4 +1,4 @@
-package com.czavala.productmanagementsystem.dto;
+package com.czavala.productmanagementsystem.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
