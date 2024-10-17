@@ -1,7 +1,9 @@
-package com.czavala.productmanagementsystem.dto;
+package com.czavala.productmanagementsystem.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +18,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SaveProductDto implements Serializable {
 
-    @NotBlank(message = "Product name is required")
+    @NotBlank(message = "{generic.notblank}")
     private String name;
 
-    @Min(value = 1, message = "Price must be greater than 1")
+    @Positive(message = "{generic.positive}")
     private Long price;
-    
+
     private MultipartFile image;
 
-    @Min(value = 1, message = "Category must be valid")
+    @Positive(message = "{generic.positive}")
+    @JsonProperty("category_id")
     private Long categoryId;
 }

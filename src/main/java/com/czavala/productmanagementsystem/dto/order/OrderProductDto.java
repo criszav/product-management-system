@@ -2,6 +2,7 @@ package com.czavala.productmanagementsystem.dto.order;
 
 import com.czavala.productmanagementsystem.persistance.entities.Product;
 import com.czavala.productmanagementsystem.persistance.entities.order.Order;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,5 @@ public class OrderProductDto implements Serializable {
 //    private Order order;
     private Product product;
     private Integer quantity;
-    private Long totalPrice;
+    @JsonProperty("total_price") private Long totalPrice;
 }

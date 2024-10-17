@@ -26,8 +26,7 @@ public class CloudinaryService {
 
             // Obtiene nombre original del archivo subido por el cliente (nombre de la imagen en pc del cliente, incluye la extension)
             String originalFileName = image.getOriginalFilename();
-            System.out.println();
-            System.out.println("variable 'originalFileName': " + originalFileName);
+            System.out.println("\nvariable 'originalFileName': " + originalFileName + "\n");
 
             // Si el archivo no tiene nombre o si la extension no una de las permitidas, se lanza una exception
             if (originalFileName == null || !isExtensionAllowed(originalFileName)) {
@@ -38,13 +37,11 @@ public class CloudinaryService {
             // Extrae el nombre original del archivo pero sin la extension (el metodo lastIndexOf
             int lastDotIndex = originalFileName.lastIndexOf('.'); // retorna el indice del ultimo punto en el nombre del archivo
             String baseName = originalFileName.substring(0, lastDotIndex);
-            System.out.println();
-            System.out.println("variable 'baseName': " + baseName);
+            System.out.println("\nvariable 'baseName': " + baseName + "\n");
 
             // Identificador unico
             String uniqueId = UUID.randomUUID().toString();
-            System.out.println();
-            System.out.println("variable 'uniqueId': " + uniqueId);
+            System.out.println("\nvariable 'uniqueId': " + uniqueId + "\n");
 
             // Concate el nombre base del archivo (sin la extension) con la id unico generado previamente
             // Agrega el prefijo "ecommerce" para indicar que la imagen será guardada en la carpeta "ecommerce" en Cloudinary
@@ -52,8 +49,7 @@ public class CloudinaryService {
             Ejemplo: baseName = 'imagen1', uniqueId = 12345 -> publicId = ecommerce/imagen1_12345
             */
             String publicId = "ecommerce/" + baseName + "_" + uniqueId;
-            System.out.println();
-            System.out.println("variable 'publicId': " + publicId);
+            System.out.println("\nvariable 'publicId': " + publicId + "\n");
 
             // Configuracion parametros de subida de la imagen a Cloudinary
             Map uploadParams = ObjectUtils.asMap(
@@ -64,19 +60,15 @@ public class CloudinaryService {
                     // esta seteando en 'false' porque la unicidad del nombre del archivo la manejamos mediante 'publicId'
                     "unique_filename", false
             );
-            System.out.println();
-            System.out.println("variable 'uploadParams': " + uploadParams);
+            System.out.println("\nvariable 'uploadParams': " + uploadParams + "\n");
 
             // Metodo que efectivamente carga la image a Cloudinary
             // Convierte el archivo en un array de bytes, ademas de utilizar los parametros de subida definidos previamente
             Map uploadResult = cloudinary.uploader().upload(image.getBytes(), uploadParams);
-            System.out.println();
-            System.out.println("variable 'uploadResult': " + uploadResult);
+            System.out.println("\nvariable 'uploadResult': " + uploadResult + "\n");
 
             String imageUrl = uploadResult.get("url").toString();
-            System.out.println();
-            System.out.println("Variable 'imageUrl': " + imageUrl);
-            System.out.println();
+            System.out.println("\nVariable 'imageUrl': " + imageUrl + "\n");
 
             return imageUrl;
 
@@ -90,7 +82,7 @@ public class CloudinaryService {
     // Verifica si existe en la lista de extensiones permitidas: retorna 'true' si existe, de lo contrario 'false'
     private boolean isExtensionAllowed(String originalFileName) {
         int lastDotIndex = originalFileName.lastIndexOf('.'); // retorna el indice del ultimo punto en el nombre del archivo
-        // Si nombre del archivo no contiene puntos(-1) significa que al extension NO esta permitida (return false)
+        // Si nombre del archivo no contiene puntos(-1) significa que la extension NO esta permitida (return false)
         if (lastDotIndex == -1) {
             return false;
         }

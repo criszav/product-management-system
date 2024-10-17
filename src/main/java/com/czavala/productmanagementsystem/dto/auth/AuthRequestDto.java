@@ -14,8 +14,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AuthRequestDto implements Serializable {
 
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = "{generic.notblank}")
     private String username;
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "{generic.notblank}")
     private String password;
 }

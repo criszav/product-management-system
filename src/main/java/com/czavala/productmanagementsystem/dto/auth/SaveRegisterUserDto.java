@@ -1,8 +1,7 @@
 package com.czavala.productmanagementsystem.dto.auth;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,25 +15,26 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SaveRegisterUserDto implements Serializable {
 
-    @NotEmpty(message = "Firstname is required")
+    @NotBlank(message = "{generic.notblank}")
     private String firstname;
 
-    @NotEmpty(message = "Lastname is required")
+    @NotBlank(message = "{generic.notblank}")
     private String lastname;
 
-    @NotEmpty(message = "Username is required")
-    @Size(min = 5, message = "Username must contain at least 5 characters")
+    @NotBlank(message = "{generic.notblank}")
+    @Size(min = 5, max = 15, message = "{generic.size}")
     private String username;
 
-    @NotEmpty(message = "Email is required")
-    @Email(message = "Email must be valid")
+    @NotBlank(message = "{generic.notblank}")
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "{generic.mail}")
     private String email;
 
-    @NotEmpty(message = "Password is required")
-    @Size(min = 8, message = "Password must contain at least 8 characters")
+    @NotBlank(message = "{generic.notblank}")
+    @Size(min = 12, max = 255, message = "{generic.size}")
     private String password;
 
-    @NotEmpty(message = "Repeated Password is required")
-    @Size(min = 8, message = "Repeated Password must contain at least 8 characters")
+    @NotBlank(message = "{generic.notblank}")
+    @Size(min = 12, max = 255, message = "{generic.size}")
+    @JsonProperty("repeated_password")
     private String repeatedPassword;
 }

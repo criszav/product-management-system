@@ -1,5 +1,6 @@
 package com.czavala.productmanagementsystem.dto.cart;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,9 @@ import java.io.Serializable;
 public class CartItemDto implements Serializable {
 
     private Long id;
-    private Long productId;
+    @JsonProperty("product_id") private Long productId;
     private Integer quantity;
-    private Long totalPrice;
+    @JsonProperty("total_price") private Long totalPrice;
     private Long cartId;
 
 }

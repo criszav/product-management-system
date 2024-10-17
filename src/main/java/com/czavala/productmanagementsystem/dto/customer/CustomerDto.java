@@ -1,6 +1,7 @@
 package com.czavala.productmanagementsystem.dto.customer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,10 @@ public class CustomerDto implements Serializable {
     private String role;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @JsonProperty("last_modified")
     private LocalDateTime lastModified;
 }

@@ -1,5 +1,6 @@
-package com.czavala.productmanagementsystem.dto;
+package com.czavala.productmanagementsystem.dto.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class ProductDto implements Serializable {
     private Long id;
     private String name;
     private Long price;
-    private String imageUrl;
+    @JsonProperty("image_url") private String imageUrl;
     private String category;
     private String status;
 }

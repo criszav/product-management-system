@@ -1,4 +1,4 @@
-package com.czavala.productmanagementsystem.dto;
+package com.czavala.productmanagementsystem.dto.productCategory;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SaveCategoryDto implements Serializable {
 
-    @NotBlank(message = "Category name is required")
+    @NotBlank(message = "{generic.notblank}")
     private String name;
 }
